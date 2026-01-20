@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { BookingFormDialog } from "@/components/BookingFormDialog";
+import SEO from "@/components/SEO";
 import {
   MessageSquare,
   Users,
@@ -131,6 +132,12 @@ const additionalCapabilities = [
 const Services = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="AI Automation Services - Custom Workflows & Business Process Automation"
+        description="Professional AI automation services including chatbots, workflow automation, CRM integration, and custom AI solutions. Transform your business processes with expert automation services."
+        keywords="AI automation services, chatbot development, workflow automation, CRM integration, business process automation, custom AI solutions, automation consulting"
+        url="https://drexflows.in/services"
+      />
       <Navbar />
       <main className="pt-20">
         {/* Hero Section */}

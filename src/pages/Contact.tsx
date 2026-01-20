@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import SEO from "@/components/SEO";
 import {
   Select,
   SelectContent,
@@ -107,6 +108,12 @@ const Contact = () => {
 
   return (
     <>
+      <SEO 
+        title="Contact Us - Get Your Free AI Automation Consultation"
+        description="Contact Drexflows for AI automation solutions. Get a free consultation, custom quotes, and expert advice on workflow automation. Email: drexflows@gmail.com. Response within 2 hours."
+        keywords="contact AI automation, automation consultation, workflow automation contact, AI automation quote, business automation contact"
+        url="https://drexflows.in/contact"
+      />
       <SuccessMessage
         isVisible={isVisible}
         title={title}

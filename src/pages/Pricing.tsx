@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Check, Sparkles, ArrowRight, HelpCircle } from "lucide-react";
 import { PlanSelectionDialog } from "@/components/PlanSelectionDialog";
+import SEO from "@/components/SEO";
 
 const plans = [
   {
@@ -107,6 +108,12 @@ const faqs = [
 const Pricing = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="Pricing Plans - AI Automation Solutions Starting at $11/month"
+        description="Affordable AI automation pricing plans for businesses. Starter plan at $11/month, Growth at $49/month. Custom workflows, integrations, and 24/7 support. Get started today!"
+        keywords="AI automation pricing, workflow automation cost, business automation plans, automation pricing, AI tools pricing, process automation cost"
+        url="https://drexflows.in/pricing"
+      />
       <Navbar />
       <main className="pt-20">
         {/* Hero Section */}
