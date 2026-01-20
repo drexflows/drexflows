@@ -1,0 +1,13 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "installCommand": "npm install",
+  "env": {
+    "VITE_TELEGRAM_BOT_TOKEN": "@telegram_bot_token",
+    "VITE_TELEGRAM_CHAT_ID": "@telegram_chat_id",
+    "VITE_SUPABASE_PROJECT_ID": "@supabase_project_id",
+    "VITE_SUPABASE_PUBLISHABLE_KEY": "@supabase_publishable_key",
+    "VITE_SUPABASE_URL": "@supabase_url"
+  }
+}

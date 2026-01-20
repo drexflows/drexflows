@@ -1,6 +1,19 @@
-const TELEGRAM_BOT_TOKEN = '7961020846:AAHxJI6TdsZmY87A1u5FwOgvZL8bcthkoXs';
-// Correct chat ID found from bot updates
-const TELEGRAM_CHAT_ID = '1296558158';
+const TELEGRAM_BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN || '7961020846:AAHxJI6TdsZmY87A1u5FwOgvZL8bcthkoXs';
+const TELEGRAM_CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID || '1296558158';
+
+// Validate environment variables
+const validateTelegramConfig = (): boolean => {
+  if (!TELEGRAM_BOT_TOKEN) {
+    console.error('❌ TELEGRAM_BOT_TOKEN is not configured');
+    return false;
+  }
+  if (!TELEGRAM_CHAT_ID) {
+    console.error('❌ TELEGRAM_CHAT_ID is not configured');
+    return false;
+  }
+  console.log('✅ Telegram configuration validated');
+  return true;
+};
 
 // Test function to try sending a message and identify working chat ID
 export const testTelegramConnection = async (): Promise<string | null> => {
@@ -87,6 +100,10 @@ interface PlanSelectionData {
 }
 
 export const sendContactFormToTelegram = async (formData: ContactFormData): Promise<boolean> => {
+  if (!validateTelegramConfig()) {
+    return false;
+  }
+  
   try {
     const message = `
 🔔 New Contact Form Submission
@@ -130,6 +147,10 @@ ${formData.message}
 };
 
 export const sendMeetingRequestToTelegram = async (formData: MeetingFormData): Promise<boolean> => {
+  if (!validateTelegramConfig()) {
+    return false;
+  }
+  
   try {
     const message = `
 📅 New Meeting Request
@@ -169,6 +190,10 @@ export const sendMeetingRequestToTelegram = async (formData: MeetingFormData): P
 };
 
 export const sendAutomationRequirementToTelegram = async (formData: AutomationRequirementData): Promise<boolean> => {
+  if (!validateTelegramConfig()) {
+    return false;
+  }
+  
   try {
     const message = `
 🤖 New Automation Requirement
@@ -210,6 +235,10 @@ ${formData.usecase}
 };
 
 export const sendPlanSelectionToTelegram = async (formData: PlanSelectionData): Promise<boolean> => {
+  if (!validateTelegramConfig()) {
+    return false;
+  }
+  
   try {
     const message = `
 💳 New Plan Selection
