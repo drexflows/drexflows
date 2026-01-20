@@ -21,18 +21,18 @@ export const HeroSection = () => {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse delay-1000" />
 
-      <div className="container mx-auto px-4 pt-24 pb-16 relative z-10">
+      <div className="container-responsive pt-20 sm:pt-24 pb-12 sm:pb-16 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6 sm:mb-8 animate-fade-in">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-primary">
+            <span className="text-xs sm:text-sm font-medium text-primary">
               AI-Powered Business Automation
             </span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight animate-fade-in">
+          <h1 className="text-responsive-hero font-bold mb-4 sm:mb-6 leading-tight animate-fade-in px-2 sm:px-0">
             Automate Your Business.
             <br />
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -41,21 +41,21 @@ export const HeroSection = () => {
           </h1>
 
           {/* Sub-headline */}
-          <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-fade-in delay-100">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto animate-fade-in delay-100 px-4 sm:px-0">
             We design intelligent automation systems that replace manual work, increase efficiency, and unlock exponential growth for your business.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in delay-200">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 animate-fade-in delay-200 px-4 sm:px-0">
             <BookingFormDialog>
-              <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-300 shadow-xl shadow-primary/25 px-8 h-14 text-lg group">
+              <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-300 shadow-xl shadow-primary/25 px-6 sm:px-8 h-12 sm:h-14 text-base sm:text-lg group btn-touch w-full sm:w-auto">
                 Book Automation
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </BookingFormDialog>
-            <Link to="/services">
-              <Button size="lg" variant="outline" className="border-border/50 bg-background/50 backdrop-blur-sm hover:bg-muted/50 px-8 h-14 text-lg group">
-                <Play className="mr-2 w-5 h-5" />
+            <Link to="/services" className="w-full sm:w-auto">
+              <Button size="lg" variant="outline" className="border-border/50 bg-background/50 backdrop-blur-sm hover:bg-muted/50 px-6 sm:px-8 h-12 sm:h-14 text-base sm:text-lg group btn-touch w-full">
+                <Play className="mr-2 w-4 sm:w-5 h-4 sm:h-5" />
                 View Solutions
               </Button>
             </Link>

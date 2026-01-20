@@ -78,7 +78,7 @@ export const PricingPreview = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid-responsive-3 gap-responsive max-w-5xl mx-auto">
           {plans.map((plan) => (
             <Card
               key={plan.name}
