@@ -40,7 +40,7 @@ const services = [
       "Auto-posting & content scheduling",
       "Engagement analytics & reporting",
     ],
-    platforms: ["Instagram", "Facebook", "Twitter", "LinkedIn", "TikTok"],
+    platforms: ["Instagram", "Facebook", "TikTok"],
     gradient: "from-primary to-primary/70",
   },
   {

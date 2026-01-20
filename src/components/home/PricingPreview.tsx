@@ -2,50 +2,60 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Check, ArrowRight, Sparkles } from "lucide-react";
+import { PlanSelectionDialog } from "@/components/PlanSelectionDialog";
 
 const plans = [
   {
     name: "Starter",
     description: "Perfect for small teams getting started with automation",
-    price: "$997",
+    price: "$11",
     period: "/month",
+    projectPrice: "",
     features: [
       "Up to 3 automated workflows",
-      "Basic integrations",
+      "Basic platform integrations",
       "Email & chat support",
-      "Monthly reporting",
+      "Monthly performance reports",
+      "48-hour response time",
+      "Self-service dashboard",
     ],
     cta: "Get Started",
     popular: false,
   },
   {
     name: "Growth",
-    description: "For growing businesses ready to scale operations",
-    price: "$2,497",
+    description: "For growing businesses ready to scale their operations",
+    price: "$49",
     period: "/month",
+    projectPrice: "",
     features: [
       "Up to 10 automated workflows",
       "Advanced AI workflows",
-      "CRM & social automation",
+      "CRM & social media automation",
       "Priority support",
-      "Weekly analytics",
+      "Weekly analytics & insights",
       "Custom integrations",
+      "WhatsApp & SMS automation",
+      "A/B testing capabilities",
     ],
     cta: "Start Growing",
     popular: true,
   },
   {
     name: "Enterprise",
-    description: "Custom solutions for large organizations",
+    description: "Custom solutions for large organizations with complex needs",
     price: "Custom",
     period: "",
+    projectPrice: "",
     features: [
-      "Unlimited workflows",
+      "Unlimited automated workflows",
       "Dedicated automation architect",
-      "AI agents & voice bots",
-      "SLA & compliance",
+      "AI chat & voice agents",
+      "SLA & compliance guarantees",
       "White-glove onboarding",
       "24/7 priority support",
+      "Custom development hours",
+      "Advanced security features",
     ],
     cta: "Contact Sales",
     popular: false,
@@ -87,9 +97,18 @@ export const PricingPreview = () => {
               <CardHeader className={plan.popular ? "pt-14" : ""}>
                 <h3 className="text-xl font-bold">{plan.name}</h3>
                 <p className="text-sm text-muted-foreground">{plan.description}</p>
-                <div className="mt-4">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className="text-muted-foreground">{plan.period}</span>
+                <div className="mt-6 space-y-2">
+                  <div>
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    {plan.period && (
+                      <span className="text-muted-foreground">{plan.period}</span>
+                    )}
+                  </div>
+                  {plan.projectPrice && (
+                    <p className="text-sm text-muted-foreground">
+                      {plan.projectPrice}
+                    </p>
+                  )}
                 </div>
               </CardHeader>
               <CardContent>
@@ -103,7 +122,14 @@ export const PricingPreview = () => {
                     </li>
                   ))}
                 </ul>
-                <Link to="/pricing">
+                <PlanSelectionDialog
+                  selectedPlan={{
+                    name: plan.name,
+                    price: plan.price,
+                    period: plan.period,
+                    projectPrice: plan.projectPrice,
+                  }}
+                >
                   <Button
                     className={`w-full ${
                       plan.popular
@@ -114,7 +140,7 @@ export const PricingPreview = () => {
                   >
                     {plan.cta}
                   </Button>
-                </Link>
+                </PlanSelectionDialog>
               </CardContent>
             </Card>
           ))}

@@ -4,13 +4,14 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Check, Sparkles, ArrowRight, HelpCircle } from "lucide-react";
+import { PlanSelectionDialog } from "@/components/PlanSelectionDialog";
 
 const plans = [
   {
     name: "Starter",
     description: "Perfect for small teams getting started with automation",
     monthlyPrice: "$11",
-    projectPrice: "$20",
+    projectPrice: "",
     features: [
       "Up to 3 automated workflows",
       "Basic platform integrations",
@@ -32,7 +33,7 @@ const plans = [
     name: "Growth",
     description: "For growing businesses ready to scale their operations",
     monthlyPrice: "$49",
-    projectPrice: "$100",
+    projectPrice: "",
     features: [
       "Up to 10 automated workflows",
       "Advanced AI workflows",
@@ -51,7 +52,7 @@ const plans = [
     name: "Enterprise",
     description: "Custom solutions for large organizations with complex needs",
     monthlyPrice: "Custom",
-    projectPrice: "Custom",
+    projectPrice: "",
     features: [
       "Unlimited automated workflows",
       "Dedicated automation architect",
@@ -126,16 +127,6 @@ const Pricing = () => {
           </div>
         </section>
 
-        {/* Pricing Toggle */}
-        <section className="py-4">
-          <div className="container mx-auto px-4">
-            <div className="flex justify-center items-center gap-4 text-sm text-muted-foreground">
-              <span>Monthly Retainer</span>
-              <span className="text-foreground font-medium">or</span>
-              <span>Project-Based Pricing Available</span>
-            </div>
-          </div>
-        </section>
 
         {/* Pricing Cards */}
         <section className="py-12">
@@ -170,11 +161,6 @@ const Pricing = () => {
                           <span className="text-muted-foreground">/month</span>
                         )}
                       </div>
-                      {plan.projectPrice !== "Custom" && (
-                        <p className="text-sm text-muted-foreground">
-                          or {plan.projectPrice} one-time
-                        </p>
-                      )}
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -199,20 +185,40 @@ const Pricing = () => {
                         </li>
                       ))}
                     </ul>
-                    <Link to="/contact">
-                      <Button
-                        className={`w-full ${
-                          plan.popular
-                            ? "bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-                            : ""
-                        }`}
-                        variant={plan.popular ? "default" : "outline"}
-                        size="lg"
+                    {plan.name === "Enterprise" ? (
+                      <Link to="/contact">
+                        <Button
+                          className="w-full"
+                          variant="outline"
+                          size="lg"
+                        >
+                          {plan.cta}
+                          <ArrowRight className="ml-2 w-4 h-4" />
+                        </Button>
+                      </Link>
+                    ) : (
+                      <PlanSelectionDialog
+                        selectedPlan={{
+                          name: plan.name,
+                          price: plan.monthlyPrice,
+                          period: "/month",
+                          projectPrice: `or $${plan.projectPrice} one-time`,
+                        }}
                       >
-                        {plan.cta}
-                        <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
-                    </Link>
+                        <Button
+                          className={`w-full ${
+                            plan.popular
+                              ? "bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                              : ""
+                          }`}
+                          variant={plan.popular ? "default" : "outline"}
+                          size="lg"
+                        >
+                          {plan.cta}
+                          <ArrowRight className="ml-2 w-4 h-4" />
+                        </Button>
+                      </PlanSelectionDialog>
+                    )}
                   </CardContent>
                 </Card>
               ))}

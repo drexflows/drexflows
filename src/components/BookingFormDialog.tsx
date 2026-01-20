@@ -7,12 +7,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2, CheckCircle2, AlertCircle, Sparkles, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { sendAutomationRequirementToTelegram } from "@/services/telegramService";
+import { SuccessMessage } from "@/components/ui/success-message";
+import { useSuccessMessage } from "@/hooks/use-success-message";
 
 interface BookingFormDialogProps {
   children: React.ReactNode;
 }
 
 export const BookingFormDialog = ({ children }: BookingFormDialogProps) => {
+  const { isVisible, title, description, showSuccess, hideSuccess } = useSuccessMessage();
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
@@ -40,22 +44,43 @@ export const BookingFormDialog = ({ children }: BookingFormDialogProps) => {
     formDataObj.append("Usecase", formData.usecase);
 
     try {
-      const response = await fetch(SCRIPT_URL, {
+      // Send to Google Sheets (existing functionality)
+      const sheetsResponse = await fetch(SCRIPT_URL, {
         method: "POST",
         body: formDataObj,
       });
-      const data = await response.json();
+      const sheetsData = await sheetsResponse.json();
 
-      if (data.result === "success") {
-        setStatus("success");
+      // Send to Telegram bot (new functionality)
+      const telegramSuccess = await sendAutomationRequirementToTelegram({
+        name: formData.name,
+        email: formData.email,
+        contactNumber: formData.contactNumber,
+        usecase: formData.usecase,
+      });
+
+      // Check if both submissions were successful
+      if (sheetsData.result === "success" && telegramSuccess) {
+        showSuccess(
+          "Thank you!",
+          "We'll get back to you within 2 hours"
+        );
         setFormData({ name: "", email: "", contactNumber: "", usecase: "" });
-        setTimeout(() => {
-          setIsOpen(false);
-          setStatus("idle");
-        }, 2500);
+        setIsOpen(false);
+        setStatus("idle");
+      } else if (sheetsData.result === "success" && !telegramSuccess) {
+        // Google Sheets worked but Telegram failed
+        showSuccess(
+          "Thank you!",
+          "We'll get back to you within 2 hours"
+        );
+        setFormData({ name: "", email: "", contactNumber: "", usecase: "" });
+        console.warn("Data saved to Google Sheets but Telegram notification failed");
+        setIsOpen(false);
+        setStatus("idle");
       } else {
         setStatus("error");
-        setErrorMessage(data.message || "Unknown error occurred");
+        setErrorMessage(sheetsData.message || "Error submitting form");
       }
     } catch (err) {
       setStatus("error");
@@ -76,8 +101,16 @@ export const BookingFormDialog = ({ children }: BookingFormDialogProps) => {
   ];
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <>
+      <SuccessMessage
+        isVisible={isVisible}
+        title={title}
+        description={description}
+        onClose={hideSuccess}
+      />
+      
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[460px] p-0 border-0 bg-transparent shadow-none overflow-visible">
         {/* Main Card with glassmorphism */}
         <div 
@@ -254,5 +287,6 @@ export const BookingFormDialog = ({ children }: BookingFormDialogProps) => {
         </div>
       </DialogContent>
     </Dialog>
+    </>
   );
 };

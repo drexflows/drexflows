@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Zap, Mail, MapPin, Clock, Linkedin, Twitter, Youtube } from "lucide-react";
+import { Zap, Mail, MapPin, Clock } from "lucide-react";
 
 const footerLinks = {
   solutions: [
@@ -46,26 +46,6 @@ export const Footer = () => {
             <p className="text-muted-foreground mb-6 max-w-sm">
               We design intelligent automation systems that replace manual work, increase efficiency, and unlock exponential growth.
             </p>
-            <div className="flex items-center gap-4">
-              <a
-                href="#"
-                className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-200"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-200"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-lg bg-muted/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-200"
-              >
-                <Youtube className="w-5 h-5" />
-              </a>
-            </div>
           </div>
 
           {/* Solutions */}

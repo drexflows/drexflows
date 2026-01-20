@@ -15,6 +15,10 @@ import {
 } from "@/components/ui/select";
 import { Mail, Phone, MapPin, Clock, MessageSquare, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { sendContactFormToTelegram } from "@/services/telegramService";
+import { MeetingBookingDialog } from "@/components/MeetingBookingDialog";
+import { SuccessMessage } from "@/components/ui/success-message";
+import { useSuccessMessage } from "@/hooks/use-success-message";
 
 const contactInfo = [
   {
@@ -39,13 +43,15 @@ const contactInfo = [
 
 const Contact = () => {
   const { toast } = useToast();
+  const { isVisible, title, description, showSuccess, hideSuccess } = useSuccessMessage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     company: "",
     service: "",
-    budget: "",
+    budgetAmount: "",
+    currency: "USD",
     message: "",
   });
 
@@ -53,22 +59,40 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // Send form data to Telegram bot
+      const success = await sendContactFormToTelegram(formData);
+      
+      if (success) {
+        showSuccess(
+          "Message sent successfully!",
+          "We'll get back to you within 24 hours."
+        );
 
-    toast({
-      title: "Message sent successfully!",
-      description: "We'll get back to you within 24 hours.",
-    });
+        setFormData({
+          name: "",
+          email: "",
+          company: "",
+          service: "",
+          budgetAmount: "",
+          currency: "USD",
+          message: "",
+        });
+      } else {
+        toast({
+          title: "Error sending message",
+          description: "Please try again or contact us directly.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error sending message",
+        description: "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    }
 
-    setFormData({
-      name: "",
-      email: "",
-      company: "",
-      service: "",
-      budget: "",
-      message: "",
-    });
     setIsSubmitting(false);
   };
 
@@ -82,8 +106,16 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <>
+      <SuccessMessage
+        isVisible={isVisible}
+        title={title}
+        description={description}
+        onClose={hideSuccess}
+      />
+      
+      <div className="min-h-screen bg-background">
+        <Navbar />
       <main className="pt-20">
         {/* Hero Section */}
         <section className="py-20 bg-gradient-to-b from-muted/50 to-background">
@@ -189,28 +221,33 @@ const Contact = () => {
 
                       <div className="space-y-2">
                         <Label htmlFor="budget">Estimated Budget</Label>
-                        <Select
-                          value={formData.budget}
-                          onValueChange={(value) =>
-                            setFormData((prev) => ({ ...prev, budget: value }))
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select budget range" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="starter">
-                              $1,000 - $3,000
-                            </SelectItem>
-                            <SelectItem value="growth">
-                              $3,000 - $10,000
-                            </SelectItem>
-                            <SelectItem value="enterprise">
-                              $10,000+
-                            </SelectItem>
-                            <SelectItem value="not-sure">Not sure yet</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <div className="flex gap-2">
+                          <Input
+                            id="budgetAmount"
+                            name="budgetAmount"
+                            type="number"
+                            value={formData.budgetAmount}
+                            onChange={handleChange}
+                            placeholder="Enter amount"
+                            className="flex-1"
+                          />
+                          <Select
+                            value={formData.currency}
+                            onValueChange={(value) =>
+                              setFormData((prev) => ({ ...prev, currency: value }))
+                            }
+                          >
+                            <SelectTrigger className="w-32">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="USD">$ USD</SelectItem>
+                              <SelectItem value="INR">₹ INR</SelectItem>
+                              <SelectItem value="EUR">€ EUR</SelectItem>
+                              <SelectItem value="AED">د.إ AED</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
 
                       <div className="space-y-2">
@@ -251,12 +288,14 @@ const Contact = () => {
                       Prefer a direct conversation? Schedule a free 30-minute
                       consultation to discuss your automation needs.
                     </p>
-                    <Button
-                      variant="outline"
-                      className="w-full border-primary/50 hover:bg-primary/10"
-                    >
-                      Schedule a Call
-                    </Button>
+                    <MeetingBookingDialog>
+                      <Button
+                        variant="outline"
+                        className="w-full border-primary/50 hover:bg-primary/10"
+                      >
+                        Schedule a Call
+                      </Button>
+                    </MeetingBookingDialog>
                   </CardContent>
                 </Card>
 
@@ -287,6 +326,7 @@ const Contact = () => {
           </div>
         </section>
 
+
         {/* FAQ CTA */}
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
@@ -305,6 +345,7 @@ const Contact = () => {
       </main>
       <Footer />
     </div>
+    </>
   );
 };
 
